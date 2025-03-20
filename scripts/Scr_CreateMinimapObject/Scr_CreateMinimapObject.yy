@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Scr_CreateMinimapObject",
+  "isCompatibility":false,
+  "isDnD":true,
+  "name":"Scr_CreateMinimapObject",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Main/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
