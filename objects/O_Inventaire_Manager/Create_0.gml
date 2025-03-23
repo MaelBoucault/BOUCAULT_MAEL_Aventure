@@ -43,7 +43,7 @@ with ( Troupe ) {
 	name = "Troupe"
 	icon = S_TroupeInventaire;
 	hand_sprite = undefined;
-	Object = O_TroupBase;
+	Object = O_TroupeBase;
 	
 	type = ITEM_Types.TROUPE
 	

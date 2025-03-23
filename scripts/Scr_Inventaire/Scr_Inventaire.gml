@@ -86,10 +86,22 @@ function draw_inventory(inv, posX, posY, width, height){
 		// -- Celle info --
 		var _item = items[i];
 		
-								// -----  LOGISTIQUE  -----//
-								
+		
+								// -----  LOGISTIQUE  -----//					
 		// -- Mouse -- //
 		var mouseIn = check_mouse_gui(xx, yy, xx + cs, yy + cs);
+		
+		if (_item != -1){
+			if (inv == Equipement) and (_item.type == ITEM_Types.TROUPE){
+			
+				if (keyboard_check_pressed(ord("E"))){
+					if(SpawnTroupe(_item)){
+						inv.quantity[i] -= 1;
+						show_debug_message("Spawn une Troupe")
+					}
+				}
+			}
+		}
 		
 		if (mouseIn){
 			OverlapTroupeItem = false;
@@ -153,9 +165,10 @@ function draw_inventory(inv, posX, posY, width, height){
 			}
 		}
 		
+
 		
 									// ----- DRAW ----- //
-									
+				
 		var sub = 0;
 		if (_item == -1){
 			if ( mouseIn ) and (cell_selected != -1){
@@ -233,13 +246,24 @@ function AddItem(itemAdd, TargetInventory ){
 
 }
 	
-function SpawnTroupe(TroupeToSpawn){
-	var _item = TroupeToSpawn;
-	
-	if (_item.type != ITEM_Types.TROUPE) return false // --VERIFF
-	
-	var spawnTroupe instance_create_layer(O_Bjorn.x ,O_Bjorn.y,"Inventaire", _item.Object)
-	
-	return true;
-	
+function SpawnTroupe(TroupeToSpawn) {
+    var _item = TroupeToSpawn;
+    
+    // Vérification du type de l'élément
+    if (_item.type != ITEM_Types.TROUPE) return false; // Ajout du point-virgule pour la fin de la ligne
+
+    // Création de l'instance du spawner à la position de O_Bjorn
+    var spawnTroupe = instance_create_layer(O_Bjorn.x, O_Bjorn.y, "Inventaire", O_Regiment);
+
+    // Vérification si l'instance a bien été créée et si on peut utiliser SetTroupe
+    if (spawnTroupe != undefined && instance_exists(spawnTroupe)) {
+        SetTroupe(_item.Object, spawnTroupe);
+    }
+
+    return true;
+}
+
+function SetTroupe(Troupe, spawner) {
+    // Assigner l'objet Troupe à la variable O_troupe dans spawner
+    spawner.O_troupe = Troupe;
 }
