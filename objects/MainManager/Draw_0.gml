@@ -3,17 +3,37 @@ if (debug){
 		
 		draw_set_color(c_red);
 		draw_rectangle(bbox_left,bbox_top, bbox_right, bbox_bottom, true)
-		
+						
 		draw_set_color(c_green);
 		draw_circle(x, y, chaseRadius, true);
 		
 		draw_set_color(c_olive);
 		draw_circle(x, y, idleRadius, true);
 		
+		draw_set_color(c_blue);
+		draw_circle(x, y, battleRadius, true);
+
 	}
+	with (O_Regiment_Ennemie){
+		
+		draw_set_color(c_red);
+		draw_rectangle(bbox_left,bbox_top, bbox_right, bbox_bottom, true)
+						
+		draw_set_color(c_green);
+		draw_circle(x, y, chaseRadius, true);
+		
+		draw_set_color(c_red);
+		draw_circle(x, y, idleRadius, true);
+		
+		draw_set_color(c_blue);
+		draw_circle(x, y, deployRadius, true);
+
+	}
+	
 	with (O_TroupeBase){
 		draw_set_color(c_red);
 		draw_rectangle(bbox_left,bbox_top, bbox_right, bbox_bottom, true)
+
 	}
 	with (O_Bjorn){
 		draw_set_color(c_red);

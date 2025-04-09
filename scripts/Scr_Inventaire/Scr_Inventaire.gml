@@ -73,8 +73,10 @@ function draw_inventory(inv, posX, posY, width, height){
 	
 	var leftClick = mouse_check_button_pressed(mb_left);
 	
+	
 	// -- Draw --
-	draw_sprite_stretched(spr, 0, _itx, _ity, _itw, _ith);
+	draw_sprite_stretched(spr, 0, _itx,_ity, _itw,_ith);
+	
 
 	// -- for Cells
 	for (var i = 0; i < array_length(items); i++){
@@ -95,14 +97,14 @@ function draw_inventory(inv, posX, posY, width, height){
 			if (inv == Equipement) and (_item.type == ITEM_Types.TROUPE){
 			
 				if (keyboard_check_pressed(ord("E"))){
-					if(SpawnTroupe(_item)){
+					if(SpawnTroupe(_item, O_Regiment)){
 						inv.quantity[i] -= 1;
 						show_debug_message("Spawn une Troupe")
 					}
 				}
 			}
 		}
-		
+
 		if (mouseIn){
 			OverlapTroupeItem = false;
 			if (_item != -1){
@@ -111,7 +113,7 @@ function draw_inventory(inv, posX, posY, width, height){
 					OverlapTroupeItem = true;
 					
 					if (keyboard_check_pressed(ord("E"))){
-						if(SpawnTroupe(_item)){
+						if(SpawnTroupe(_item, O_Regiment)){
 							inv.quantity[i] -= 1;
 							show_debug_message("Spawn une Troupe")
 						}
@@ -200,7 +202,7 @@ function draw_inventory(inv, posX, posY, width, height){
 			}
 		}
 		
-	}  // ---FIN FOR
+	} // ---FIN FOR
 
 }
 
@@ -246,9 +248,10 @@ function AddItem(itemAdd, TargetInventory ){
 
 }
 	
-function SpawnTroupe(TroupeToSpawn) {
+function SpawnTroupe(TroupeToSpawn, Target) {
     var _item = TroupeToSpawn;
-    
+    _item.target = Target;
+	
     // Vérification du type de l'élément
     if (_item.type != ITEM_Types.TROUPE) return false; // Ajout du point-virgule pour la fin de la ligne
 

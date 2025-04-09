@@ -27,15 +27,13 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[
-    {"$GMObjectProperty":"v1","%Name":"O_troupe","filters":[],"listItems":[],"multiselect":false,"name":"O_troupe","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"O_TroupeBase","path":"objects/O_TroupeBase/O_TroupeBase.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"O_TroupeBase","varType":5,},
-  ],
+  "properties":[],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"S_Spawner",
-    "path":"sprites/S_Spawner/S_Spawner.yy",
+    "name":"S_Regiment",
+    "path":"sprites/S_Regiment/S_Regiment.yy",
   },
   "spriteMaskId":null,
   "visible":true,

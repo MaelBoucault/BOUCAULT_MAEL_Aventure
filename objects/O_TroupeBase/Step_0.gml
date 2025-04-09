@@ -1,13 +1,10 @@
-
-
-			/// MOVE \\\
-if (self.parent != undefined) {
-    // Synchronise la position de la troupe avec celle du spawner
-    x = self.parent.x + initial_offset_x; // On ajoute ici l'offset aléatoire si nécessaire
-    y = self.parent.y + initial_offset_y;
+/// MOVE
+if (self.parent != undefined && independent != true) {
+    x = lerp(x, self.parent.x + initial_offset_x, 0.025);
+    y = lerp(y, self.parent.y + initial_offset_y, 0.025);
 }
 
-			/// ANIM \\\
+/// ANIM
 if (abs(parent.moveX) > abs(parent.moveY)) {
     if (parent.moveX > 0) {
         sprite_index = Right;
@@ -20,10 +17,10 @@ if (abs(parent.moveX) > abs(parent.moveY)) {
     } else if (parent.moveY < 0) {
         sprite_index = Back;
     }
-} else if (parent.state == REGIMENT_STATE.IDLE) {
+} else if (parent.state == STATE.IDLE) {
     sprite_index = Face;
 } else {
-    //diagonales
+    // Diagonales
     if (parent.moveX > 0 && parent.moveY > 0) {
         sprite_index = (abs(parent.moveX) > abs(parent.moveY)) ? Right : Face;
     } else if (parent.moveX < 0 && parent.moveY > 0) {
@@ -35,66 +32,77 @@ if (abs(parent.moveX) > abs(parent.moveY)) {
     }
 }
 
+if (state == STATE.ATTACK) sprite_index = Att;
 
-
-					// ---- COMBATS ----- \\
-	
-if (state !=TROUPE_STATE.HIT) and (place_meeting(x, y, O_Bjorn)){
-	
-	if (O_Bjorn.state != PLAYER_STATE.HIT) {
-		var _x = x;
-		var _y = y;
-		// HIT Bjorn
-		with (O_Bjorn){
-			state = PLAYER_STATE.HIT;
-			hitSPD = 10;
-			hitDirection = point_direction(_x, _y, x, y);
-			HitRepulse(O_Bjorn);
-		}
-		// HIT Self
-		state = TROUPE_STATE.HIT;
-		hitSPD = 10;
-		hitDirection = point_direction(O_Bjorn.x, O_Bjorn.y, x, y);
-		HitRepulse(self);
-		
-	}
-	
+/// COMBATS
+function switchTarget(Target){
+    target = Target;
 }
 
-// HIT RESULT \\
+function chase() {
+    independent = true;
 
-
-
-
-function setIdleState(){
-	
-	state = TROUPE_STATE.IDLE;
-}
-
-function chase(Target){
-    // Direction vers la cible
-    parent.chase_direction = point_direction(parent.x, parent.y, Target.x, Target.y);
+    if (target != undefined && instance_exists(target)) {
+        chase_direction = point_direction(x, y, target.x, target.y);
+    }
     
     // Setup du mouvement
-    moveX = lengthdir_x(parent.chaseSPD, parent.chase_direction);
-    moveY = lengthdir_y(parent.chaseSPD, parent.chase_direction);
+    moveX = lengthdir_x(chaseSPD, chase_direction);
+    moveY = lengthdir_y(chaseSPD, chase_direction);
     
     // Gestion des collisions
     if (place_meeting(parent.x + moveX, parent.y, O_Collision)) {
-        moveX = 0;  // Si collision, ne pas bouger sur X
-    }
-    if (place_meeting(parent.x, parent.y + moveY, O_Collision)) {
-        moveY = 0;  // Si collision, ne pas bouger sur Y
+        moveX = 0;
     }
     
-    // Déplacement de l'objet
-    if ((moveX == 0) and (moveY == 0)) or (distance_to_object(Target) > parent.idleRadius) {
-        parent.state = REGIMENT_STATE.IDLE;  // Retour à l'état idle si aucun mouvement
+    if (place_meeting(parent.x, parent.y + moveY, O_Collision)) {
+        moveY = 0;
+    }
+    
+    if ((moveX == 0) and (moveY == 0)) or (distance_to_object(target) > self.parent.deployRadius) {
+        state = STATE.IDLE;
+        independent = false;
     } else {
-        // Affichage du déplacement pour débogage
-        show_debug_message("moveX: " + string(moveX) + ", moveY: " + string(moveY));
-        
-        x += moveX;  // Déplacer l'objet parent
-        y += moveY;  // Déplacer l'objet parent
+        x += moveX;
+        y += moveY;
+    }
+    if (moveX == 0 && moveY == 0) {
+        independent = false;
+    }
+}
+
+if (target != undefined) {
+    if (state != STATE.HIT && place_meeting(x, y, target)) {
+        if (target.state != STATE.HIT) {
+            target.state = STATE.HIT;
+            target.hitSPD = 100;
+            target.hitDirection = point_direction(x, y, target.x, target.y);
+            target.hitAlpha = 1;
+            HitRepulse(target);
+        }
+    }
+}
+
+// HIT RESULT
+if (instance_exists(O_Axe)) {
+    if (state != STATE.HIT && place_meeting(x, y, O_Axe)) {
+        if (Team == TEAM.TEAM2) {
+            TakeDammege(-20);
+            state = STATE.HIT;
+            hitSPD = 50;
+            hitDirection = point_direction(O_Bjorn.x, O_Bjorn.y, x, y);
+            HitRepulse(self);
+        }
+    }
+}
+
+function setIdleState() {
+    state = STATE.IDLE;
+}
+
+function TakeDammege(Amount) {
+    hp += Amount;
+    if (hp <= 0) {
+        alarm[0] = 5;
     }
 }

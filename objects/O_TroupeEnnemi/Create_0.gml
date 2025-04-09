@@ -1,4 +1,11 @@
-image_xscale = .1;
-image_yscale = .1;
-image_speed = 1.5;
+event_inherited()
 
+Team = TEAM.TEAM2;
+
+target = O_Bjorn;
+
+Face = S_TroupeFaceEnnemi;
+Back = S_TroupeDosEnnemi;
+Right = S_TroupeRightEnnemi;
+Left = S_TroupeLeftEnnemi;
+Att = S_TroupeRigthAttackEnnemi;

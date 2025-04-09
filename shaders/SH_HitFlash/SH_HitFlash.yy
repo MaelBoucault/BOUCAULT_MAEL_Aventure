@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"SH_HitFlash",
+  "name":"SH_HitFlash",
+  "parent":{
+    "name":"Shaders",
+    "path":"folders/Main/Shaders.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

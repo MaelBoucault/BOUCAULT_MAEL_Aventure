@@ -4,9 +4,11 @@ var L = keyboard_check(ord("Q"));
 var U = keyboard_check(ord("Z"));
 var D = keyboard_check(ord("S"));
 
+var inputAction = mouse_check_button_pressed(1)
 
 x_direction = R - L;
 y_direction = D - U;
+
 
 
 if ( x_direction !=0) or ( y_direction!=0) {
@@ -17,21 +19,45 @@ if ( x_direction !=0) or ( y_direction!=0) {
 	moveY = lengthdir_y(moveSPD, move_direction)
 
 	if (moveX != 0) or (moveY != 0){
-		state = PLAYER_STATE.MOVE;
+		state = STATE.WALK;
 		x += moveX;
 		y += moveY;
 	}
 	if (moveX >0){
-	sprite_index = S_Right_Player;
-	}else if (moveX < 0) sprite_index = S_Left_Player;
+		sprite_index = S_Right_Player;
+	}else if (moveX < 0) {
+		sprite_index = S_Left_Player
+	}
+	if (moveY > 0){
+		sprite_index = S_Right_Player;
+	}else if (moveY < 0) {
+		sprite_index = S_Left_Player
+	}
 
 }else{
 	sprite_index = S_Idle_Player;
-	state = PLAYER_STATE.IDLE;
+	state = STATE.IDLE;
 }
 
 
 function setIdleState(){
 	
-	state = PLAYER_STATE.IDLE;
+	state = STATE.IDLE;
+}
+			// --- INPUT ACTION --- \\
+
+if ( inputAction){
+	
+	if (state == STATE.IDLE) or (state == STATE.WALK){
+		state = STATE.ATTACK;
+		
+		alarm[0] = room_speed /10;
+		
+		axe = instance_create_depth(x, y, depth +1, O_Axe);
+		if (R) axe.image_index = 3;
+		if (L) axe.image_index = 2;
+		if (U) axe.image_index = 1;
+		if (D) axe.image_index = 0;
+		
+	}
 }

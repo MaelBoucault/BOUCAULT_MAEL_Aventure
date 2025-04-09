@@ -1,7 +1,7 @@
 
-enum  PLAYER_STATE {HIT, FROZEN, IDLE, MOVE}
+state = STATE.IDLE;
 
-state = PLAYER_STATE.IDLE;
+axe = undefined;
 
 moveX = 0;
 moveY = 0;
@@ -17,3 +17,8 @@ image_speed = 2;
 //Combat
 hitSPD = 0;
 hitDirection = 0;
+
+
+hitAlpha = 0;
+
+dir = undefined;

@@ -1,3 +1,5 @@
+
+
 function HitRepulse(Object) 
 {
 	var o = Object;
@@ -21,6 +23,27 @@ function HitRepulse(Object)
 	o.hitSPD -= .2;
 	
 	// Returne Idll
-	o.setIdleState();
+	o.state = STATE.IDLE;
 
 }
+
+
+
+function SetUpBattle(regiment1,regiment2){
+
+	show_debug_message("SetUpBattle")
+	var reg1 = regiment1;
+	var reg2 = regiment2;
+	
+	if (array_length( reg1.Children) == array_length( reg2.Children)){
+		for (var i = 0; i < array_length( reg1.Children); i++) {
+			if (instance_exists(reg1.Children[i])){
+				i.switchTarget(reg2.Children[i]);
+			}
+		}
+		reg1.deployTroupe();
+		reg2.deployTroupe();
+	}
+}
+
+

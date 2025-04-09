@@ -29,10 +29,11 @@ if (InverntoryMode){
 	var eh = (2 * offset) + (ey * (cs + border) ) - border; 
 	
 	
-	var ekX = invX- ew - border*2;
+	var equipX = invX- ew - border*2;
 	
 	
-	draw_inventory(Equipement, ekX, invY, ew, eh);
+	draw_inventory(Equipement, equipX, invY, ew, eh);
+	
 
 
 	// --- DRAW ITEM SELECT ---
@@ -44,7 +45,10 @@ if (InverntoryMode){
 		var mouseX = device_mouse_x_to_gui(0);
 		var mouseY = device_mouse_y_to_gui(0);
 		
-		draw_sprite_ext(_icon, 0, mouseX + 32, mouseY + 32, .5, .5, 0, -1, 1)
+
+		draw_sprite_ext(_icon, 0, mouseX + 32, mouseY + 32, .5, .5, 0, -1, 1);
+
+		
 	}
 	if (OverlapTroupeItem){
 		draw_text(device_mouse_x_to_gui(0) + offset - 20,device_mouse_y_to_gui(0) + offset - 20, "E");
@@ -52,4 +56,4 @@ if (InverntoryMode){
 	}
 
 
-}//Fin if (InverntoryMode) //
+}//Fin du "if (InverntoryMode)" //

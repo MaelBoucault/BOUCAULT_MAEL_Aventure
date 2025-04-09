@@ -11,13 +11,16 @@ cell_selected = -1;
 InverntoryMode = false;
 OverlapTroupeItem = false;
 
-Inventaire = new storage(5,3);
+Inventaire = new storage(4,3);
 Equipement = new storage(1,3);
 
 
 var bracelet = new item()
 var axe = new item()
 var Troupe = new item()
+
+inventaire = undefined;
+
 
 with ( bracelet ) {
 	name = "bracelet sacré"
