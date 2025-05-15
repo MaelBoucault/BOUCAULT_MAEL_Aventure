@@ -1,4 +1,6 @@
 
+
+
 state = STATE.IDLE;
 
 axe = undefined;
@@ -18,7 +20,12 @@ image_speed = 2;
 hitSPD = 0;
 hitDirection = 0;
 
+globalvar hpMax;
+hpMax = 100;
+hp = hpMax;
 
 hitAlpha = 0;
 
 dir = undefined;
+
+invincible = false;

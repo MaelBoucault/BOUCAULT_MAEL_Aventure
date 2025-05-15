@@ -1,0 +1,14 @@
+{
+  "FolderOrderSettings":[],
+  "ResourceOrderSettings":[
+    {"name":"O_Marchant","order":1,"path":"objects/O_Marchant/O_Marchant.yy",},
+    {"name":"R_Village","order":1,"path":"rooms/R_Village/R_Village.yy",},
+    {"name":"Maison","order":5,"path":"sprites/Maison/Maison.yy",},
+    {"name":"S_Coin","order":1,"path":"sprites/S_Coin/S_Coin.yy",},
+    {"name":"S_Herbe","order":1,"path":"sprites/S_Herbe/S_Herbe.yy",},
+    {"name":"S_Marchant","order":9,"path":"sprites/S_Marchant/S_Marchant.yy",},
+    {"name":"TileSet36","order":7,"path":"sprites/TileSet36/TileSet36.yy",},
+    {"name":"TileSet2","order":2,"path":"tilesets/TileSet2/TileSet2.yy",},
+    {"name":"TileSet3","order":8,"path":"tilesets/TileSet3/TileSet3.yy",},
+  ],
+}

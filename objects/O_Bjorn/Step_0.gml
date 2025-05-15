@@ -61,3 +61,19 @@ if ( inputAction){
 		
 	}
 }
+
+function TakeDamage(Amount) {
+	if (!invincible){
+		hp += Amount;
+		if (hp > hpMax){
+			hp = hpMax;
+		}
+	}
+	invincible = true;
+	alarm[2] = 60;
+    if (hp <= 0) {
+        room_restart();
+    }
+}
+
+show_debug_message(hpMax);

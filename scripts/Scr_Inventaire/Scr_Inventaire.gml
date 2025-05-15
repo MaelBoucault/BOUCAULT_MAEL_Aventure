@@ -1,23 +1,35 @@
-enum ITEM_Types {OBJECT, TROUPE}
+enum ITEM_Types {OBJECT, TROUPE, COIN}
 
+enum STORAGE_Types {PLAYER,EQUIP,MERCHENT}
 
 function item() constructor {
+	
 	name = "";
+	
 	icon = undefined;
+	
 	Object = undefined;
 	
 	type = undefined
 	
 	stack = true;
-
+	
+	cost = 0;
+	
 }
 
 
-function storage(X,Y) constructor {
+function storage(X,Y, storageType) constructor {
+	
 	inv_x = X;
+	
 	inv_y = Y;
+	
 	items = array_create(inv_x * inv_y, -1);
+	
 	quantity = array_create(inv_x * inv_y, 0);
+	
+	type = storageType;
 	
 }
 
@@ -74,13 +86,17 @@ function draw_inventory(inv, posX, posY, width, height){
 	var leftClick = mouse_check_button_pressed(mb_left);
 	
 	
-	// -- Draw --
+	// -- Draw -- \\
+	
 	draw_sprite_stretched(spr, 0, _itx,_ity, _itw,_ith);
+	
+	
 	
 
 	// -- for Cells
 	for (var i = 0; i < array_length(items); i++){
 		// -- Celle Loc -- 
+		
 		var line = i div _inv.inv_x;
 		var xx = cx1 + i *(cs + border) - (line * _inv.inv_x * (cs + border));
 		var yy = cy1 + line *(cs + border) ;
@@ -106,7 +122,10 @@ function draw_inventory(inv, posX, posY, width, height){
 		}
 
 		if (mouseIn){
+			
 			OverlapTroupeItem = false;
+			OverlapItemMerch = false;
+			
 			if (_item != -1){
 				if (_item.type == ITEM_Types.TROUPE) {
 
@@ -115,53 +134,75 @@ function draw_inventory(inv, posX, posY, width, height){
 					if (keyboard_check_pressed(ord("E"))){
 						if(SpawnTroupe(_item, O_Regiment)){
 							inv.quantity[i] -= 1;
-							show_debug_message("Spawn une Troupe")
 						}
 					}
 				}else OverlapTroupeItem = false;
 				
+				if (inv.type = STORAGE_Types.MERCHENT){
+					
+					OverlapItemMerch = true;
+					OverlapItemMerchCost = _item.cost;
+					
+					
+				}
 				
 				if(leftClick){
-					leftClick = false;
 					
-					if (cell_selected == -1) {
+					leftClick = false;
+					if ( (inv.type = STORAGE_Types.MERCHENT) and (_item.cost <= nbCoin) )  or (inv.type != STORAGE_Types.MERCHENT) {
 						
-						cell_selected = i;
-						inv_selected = inv;
-					}else {
-						var itemSelected = inv_selected.items[cell_selected];
-						var nameSelected = itemSelected.name;
-						var qttSelected = inv_selected.quantity[cell_selected];
+
+						if (cell_selected == -1) {
+							
+							
+							cell_selected = i;
+							inv_selected = inv;
+							
+							if (inv.type = STORAGE_Types.MERCHENT){
+								
+								nbCoin -= _item.cost
+								
+							}
+							
 						
-						var nameTarget = _item.name;
+						}else {
+							if !(inv.type = STORAGE_Types.MERCHENT){
+								var itemSelected = inv_selected.items[cell_selected];
+								var nameSelected = itemSelected.name;
+								var qttSelected = inv_selected.quantity[cell_selected];
 						
-						if (nameTarget == nameSelected) and (_item.stack) and (!(inv_selected == inv) and (cell_selected == i)) { // --INCREMENTE
-							quantity[i] += qttSelected;
-							inv_selected.items[cell_selected] = -1;
-							inv_selected.quantity[cell_selected] = 0;
+								var nameTarget = _item.name;
+						
+								if (nameTarget == nameSelected) and (_item.stack) and (!(inv_selected == inv) and (cell_selected == i)) { // --INCREMENTE
+									quantity[i] += qttSelected;
+									inv_selected.items[cell_selected] = -1;
+									inv_selected.quantity[cell_selected] = 0;
+								}
+								else { // --- ECHANGE ITEMS -- //
+									exchange_items(inv_selected, cell_selected, inv, i);
+								}
+								cell_selected = -1;
+								inv_selected = -1;
+							}
 						}
-						else { // --- ECHANGE ITEMS -- //
-							exchange_items(inv_selected, cell_selected, inv, i);
-						}
-						cell_selected = -1;
-						inv_selected = -1;
 					}
 				}
 				
 			} else {
-				
-				if ( cell_selected != -1) { // ITEM SELECT
-					if (leftClick){ // Déplace Item
-						leftClick = false;
-						// CREER ITEM
-							items[i] = inv_selected.items[cell_selected];
-							quantity[i] = inv_selected.quantity[cell_selected];
-							// -- SUPRIME ITEM OREGINE
-							inv_selected.items[cell_selected] = -1;
-							inv_selected.quantity[cell_selected] = 0;
-							// RESET VARS
-							cell_selected = -1;
-							inv_selected = -1;
+				if !(inv.type = STORAGE_Types.MERCHENT){
+					if ( cell_selected != -1) { // ITEM SELECT
+						if (leftClick){ // Déplace Item
+							leftClick = false;
+							// CREER ITEM
+								items[i] = inv_selected.items[cell_selected];
+								quantity[i] = inv_selected.quantity[cell_selected];
+								// -- SUPRIME ITEM OREGINE
+								inv_selected.items[cell_selected] = -1;
+								inv_selected.quantity[cell_selected] = 0;
+								// RESET VARS
+								cell_selected = -1;
+								inv_selected = -1;
+						}
 					}
 				}
 			}
@@ -202,6 +243,16 @@ function draw_inventory(inv, posX, posY, width, height){
 			}
 		}
 		
+		if (inv.type = STORAGE_Types.MERCHENT){
+		
+			for (var j = 0; j < array_length(items); j++){
+			
+				//draw_text(cx1 + offset, cy1 + offset, string(items[j].cost));
+			
+			}
+		
+		}
+		
 	} // ---FIN FOR
 
 }
@@ -229,6 +280,7 @@ function AddItem(itemAdd, TargetInventory ){
 			if (it != -1) { // --- Un Item est présent
 				if (it.name == name){ // --- Item est le même
 					qtt[i] ++;
+					verifItems()
 					return true;
 				}
 			}
@@ -239,11 +291,12 @@ function AddItem(itemAdd, TargetInventory ){
 		if ( items[i] == -1) {
 			items[i] = _item;
 			qtt[i] = 1;
+			verifItems()
 			return true;
 		}
 	}
 	
-	
+	verifItems()
 	return false;
 
 }
@@ -269,4 +322,13 @@ function SpawnTroupe(TroupeToSpawn, Target) {
 function SetTroupe(Troupe, spawner) {
     // Assigner l'objet Troupe à la variable O_troupe dans spawner
     spawner.O_troupe = Troupe;
+}
+
+function verifItems(){
+	for (var i = 0; i < array_length(Equipement.items); i++){;
+		
+		if (Equipement.items.icon == S_Bracelet){
+			hpMax = 200;
+		}
+	}
 }
